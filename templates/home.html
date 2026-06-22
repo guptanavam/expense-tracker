@@ -4,14 +4,27 @@
     <title>Expense Tracker</title>
 </head>
 <body>
-    <h1>Welcome, {{ name }}!</h1>
-    <h1>Welcome to My Expense Tracker</h1>
-    <p>Track where your money goes.</p>
-    <ul>
-    {% for fruit in fruits %}
-        <li>{{ fruit }}</li>
-    {% endfor %}
-</ul>
-    <a href="/about">About this app</a>
+    <h1>Add an Expense</h1>
+
+    <form method="POST" action="/add">
+        <label>Description:</label><br>
+        <input type="text" name="description" required><br><br>
+
+        <label>Amount (₹):</label><br>
+        <input type="number" name="amount" step="0.01" required><br><br>
+
+        <label>Category:</label><br>
+        <select name="category">
+            <option value="food">Food</option>
+            <option value="travel">Travel</option>
+            <option value="shopping">Shopping</option>
+            <option value="other">Other</option>
+        </select><br><br>
+
+        <button type="submit">Add Expense</button>
+    </form>
+
+    <br>
+    <a href="/expenses">View All Expenses</a>
 </body>
 </html>

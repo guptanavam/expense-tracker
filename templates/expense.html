@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Expenses</title>
+</head>
+<body>
+    <h1>All Expenses</h1>
+    <a href="/">Add New Expense</a>
+    <br><br>
+
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Category</th>
+        </tr>
+        {% for expense in expenses %}
+        <tr>
+            <td>{{ expense.description }}</td>
+            <td>₹{{ expense.amount }}</td>
+            <td>{{ expense.category }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <strong>Total Spent: ₹{{ total }}</strong>
+</body>
+</html>
