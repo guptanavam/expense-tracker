@@ -24,6 +24,7 @@
                     <th>Description</th>
                     <th>Amount</th>
                     <th>Category</th>
+                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +33,11 @@
                     <td>{{ expense.description }}</td>
                     <td>₹{{ expense.amount }}</td>
                     <td>{{ expense.category }}</td>
+                     <td>
+                         <a href="/edit/{{ expense.id }}" class="btn btn-warning btn-sm">Edit</a>
+                <a href="/delete/{{ expense.id }}" class="btn btn-danger btn-sm">Delete</a>
+
+            </td>
                 </tr>
                 {% endfor %}
             </tbody>

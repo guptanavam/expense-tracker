@@ -41,5 +41,41 @@ def view_expenses():
 
     return render_template("expenses.html", expenses=all_expenses, total=total)
 
+@app.route("/delete/<int:expense_id>")
+def delete_expense(expense_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
+    conn.commit()
+    conn.close()
+    return redirect("/expenses") 
+
+@app.route("/edit/<int:expense_id>")
+def edit_expense(expense_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM expenses WHERE id = ?", (expense_id,))
+    expense = cursor.fetchone()
+    conn.close()
+    
+    return render_template("edit.html", expense=expense)
+
+@app.route("/update/<int:expense_id>", methods=["POST"])
+def update_expense(expense_id):
+    description = request.form["description"]
+    amount = request.form["amount"]
+    category = request.form["category"]
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE expenses SET description = ?, amount = ?, category = ? WHERE id = ?",
+        (description, float(amount), category, expense_id)
+    )
+    conn.commit()
+    conn.close()
+
+    return redirect("/expenses")
+
 if __name__ == "__main__":
     app.run(debug=True)
