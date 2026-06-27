@@ -3,14 +3,34 @@ import sqlite3
 
 app = Flask(__name__)
 
+
 def get_db_connection():
     conn = sqlite3.connect("expenses.db")
     conn.row_factory = sqlite3.Row
     return conn
 
+
+# ---------- READ routes ----------
+
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
+@app.route("/expenses")
+def view_expenses():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM expenses ORDER BY id DESC")
+    all_expenses = cursor.fetchall()
+    conn.close()
+
+    total = sum(expense["amount"] for expense in all_expenses)
+
+    return render_template("expenses.html", expenses=all_expenses, total=total)
+
+
+# ---------- CREATE route ----------
 
 @app.route("/add", methods=["POST"])
 def add_expense():
@@ -29,26 +49,8 @@ def add_expense():
 
     return redirect("/")
 
-@app.route("/expenses")
-def view_expenses():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM expenses")
-    all_expenses = cursor.fetchall()
-    conn.close()
 
-    total = sum(expense["amount"] for expense in all_expenses)
-
-    return render_template("expenses.html", expenses=all_expenses, total=total)
-
-@app.route("/delete/<int:expense_id>")
-def delete_expense(expense_id):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
-    conn.commit()
-    conn.close()
-    return redirect("/expenses") 
+# ---------- UPDATE routes ----------
 
 @app.route("/edit/<int:expense_id>")
 def edit_expense(expense_id):
@@ -57,8 +59,9 @@ def edit_expense(expense_id):
     cursor.execute("SELECT * FROM expenses WHERE id = ?", (expense_id,))
     expense = cursor.fetchone()
     conn.close()
-    
+
     return render_template("edit.html", expense=expense)
+
 
 @app.route("/update/<int:expense_id>", methods=["POST"])
 def update_expense(expense_id):
@@ -76,6 +79,19 @@ def update_expense(expense_id):
     conn.close()
 
     return redirect("/expenses")
+
+
+# ---------- DELETE route ----------
+
+@app.route("/delete/<int:expense_id>")
+def delete_expense(expense_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
+    conn.commit()
+    conn.close()
+    return redirect("/expenses")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
