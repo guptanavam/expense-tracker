@@ -21,7 +21,7 @@ A simple web app to track personal expenses, built with Flask and SQLite. Users 
 ## How to Run Locally
 
 1. Clone this repository
-git clone https://github.com/YOURUSERNAME/expense-tracker.git
+git clone https://github.com/guptanavam/expense-tracker.git
 
 cd expense-tracker
 
@@ -38,7 +38,7 @@ python app.py
 
 ## Screenshots
 
-(Add screenshots here once available)
+(Screenshots will be added here once available)
 
 ## What I Learned
 
