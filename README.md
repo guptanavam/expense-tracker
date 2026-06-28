@@ -1,3 +1,5 @@
+**🔗 Live Demo:** https://expense-tracker-2xrb.onrender.com/
+
 # Expense Tracker
 
 A simple web app to track personal expenses, built with Flask and SQLite. Users can add, edit, delete, and view expenses, with an automatically calculated running total.
@@ -49,3 +51,5 @@ Building this project helped me understand how web applications connect a fronte
 - Add user authentication so multiple people can track separate expenses
 - Add monthly/category-based spending charts
 - Deploy to a cloud platform for public access
+- Move to a persistent hosted database (e.g., PostgreSQL) — currentSQLite
+  may reset on free-tier hosting restarts
