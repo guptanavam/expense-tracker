@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
+import os
 
 app = Flask(__name__)
 
@@ -8,6 +9,21 @@ def get_db_connection():
     conn = sqlite3.connect("expenses.db")
     conn.row_factory = sqlite3.Row
     return conn
+
+def init_db():
+    conn = get_db_connection()
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS expenses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            description TEXT NOT NULL,
+            amount REAL NOT NULL,
+            category TEXT NOT NULL
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+init_db()
 
 
 # ---------- READ routes ----------
@@ -94,4 +110,5 @@ def delete_expense(expense_id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int (os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
